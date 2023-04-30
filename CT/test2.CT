@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="45">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>9</ID>
+      <Description>"Instant Build"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{ Game   : gamemd.exe
+  Version: 
+  Date   : 2020-05-15
+  Author : New Autonomous
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+aobscanmodule(InstantBuild,gamemd.exe,C3 90 90 90 8B 41 24 C3 90) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+  cmp [ecx+24],(int)53
+  jge code
+  mov [ecx+24],(int)53
+
+code:
+  mov eax,[ecx+24]
+  ret 
+  nop 
+  jmp return
+
+InstantBuild+04:
+  jmp newmem
+return:
+registersymbol(InstantBuild)
+
+[DISABLE]
+
+InstantBuild+04:
+  db 8B 41 24 C3 90
+
+unregistersymbol(InstantBuild)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "gamemd.exe"+CA120
+
+"gamemd.exe"+CA111: 83 C4 0C           -  add esp,0C
+"gamemd.exe"+CA114: C3                 -  ret 
+"gamemd.exe"+CA115: 5F                 -  pop edi
+"gamemd.exe"+CA116: 32 C0              -  xor al,al
+"gamemd.exe"+CA118: 5E                 -  pop esi
+"gamemd.exe"+CA119: 83 C4 0C           -  add esp,0C
+"gamemd.exe"+CA11C: C3                 -  ret 
+"gamemd.exe"+CA11D: 90                 -  nop 
+"gamemd.exe"+CA11E: 90                 -  nop 
+"gamemd.exe"+CA11F: 90                 -  nop 
+// ---------- INJECTING HERE ----------
+"gamemd.exe"+CA120: 8B 41 24           -  mov eax,[ecx+24]
+"gamemd.exe"+CA123: C3                 -  ret 
+"gamemd.exe"+CA124: 90                 -  nop 
+// ---------- DONE INJECTING  ----------
+"gamemd.exe"+CA125: 90                 -  nop 
+"gamemd.exe"+CA126: 90                 -  nop 
+"gamemd.exe"+CA127: 90                 -  nop 
+"gamemd.exe"+CA128: 90                 -  nop 
+"gamemd.exe"+CA129: 90                 -  nop 
+"gamemd.exe"+CA12A: 90                 -  nop 
+"gamemd.exe"+CA12B: 90                 -  nop 
+"gamemd.exe"+CA12C: 90                 -  nop 
+"gamemd.exe"+CA12D: 90                 -  nop 
+"gamemd.exe"+CA12E: 90                 -  nop 
+}
+</AssemblerScript>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+  <DisassemblerComments>
+    <DisassemblerComment>
+      <Address>"gamemd.exe"+F6A04</Address>
+      <Comment>Energy Increase
+</Comment>
+    </DisassemblerComment>
+    <DisassemblerComment>
+      <Address>"gamemd.exe"+F6A14</Address>
+      <Comment>Energy Consume
+</Comment>
+    </DisassemblerComment>
+  </DisassemblerComments>
+</CheatTable>

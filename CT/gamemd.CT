@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="31">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>1</ID>
+      <Description>"Inf. Cash"</Description>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{ Game   : gamemd.exe
+  Version: 
+  Date   : 2020-05-15
+  Author : New Autonomous
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+aobscanmodule(Cash,gamemd.exe,DA 86 E8 02 00 00) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+  cmp [esi+0000000C],0
+  jne code
+  mov [esi+000002E8],(int)999999
+
+code:
+  fiadd [esi+000002E8]
+  jmp return
+
+Cash:
+  jmp newmem
+  nop
+return:
+registersymbol(Cash)
+
+[DISABLE]
+
+Cash:
+  db DA 86 E8 02 00 00
+
+unregistersymbol(Cash)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "gamemd.exe"+F69BA
+
+"gamemd.exe"+F6991: 56                 -  push esi
+"gamemd.exe"+F6992: 8B 74 24 0C        -  mov esi,[esp+0C]
+"gamemd.exe"+F6996: 8B 46 10           -  mov eax,[esi+10]
+"gamemd.exe"+F6999: 8B 88 48 01 00 00  -  mov ecx,[eax+00000148]
+"gamemd.exe"+F699F: 89 4C 24 04        -  mov [esp+04],ecx
+"gamemd.exe"+F69A3: 8D 8E D8 02 00 00  -  lea ecx,[esi+000002D8]
+"gamemd.exe"+F69A9: E8 52 2C 1D 00     -  call gamemd.exe+2C9600
+"gamemd.exe"+F69AE: 89 44 24 0C        -  mov [esp+0C],eax
+"gamemd.exe"+F69B2: DB 44 24 0C        -  fild dword ptr [esp+0C]
+"gamemd.exe"+F69B6: D8 4C 24 04        -  fmul dword ptr [esp+04]
+// ---------- INJECTING HERE ----------
+"gamemd.exe"+F69BA: DA 86 E8 02 00 00  -  fiadd [esi+000002E8]
+// ---------- DONE INJECTING  ----------
+"gamemd.exe"+F69C0: E8 3B F5 2C 00     -  call gamemd.exe+3C5F00
+"gamemd.exe"+F69C5: 5E                 -  pop esi
+"gamemd.exe"+F69C6: 59                 -  pop ecx
+"gamemd.exe"+F69C7: C2 04 00           -  ret 0004
+"gamemd.exe"+F69CA: 90                 -  nop 
+"gamemd.exe"+F69CB: 90                 -  nop 
+"gamemd.exe"+F69CC: 90                 -  nop 
+"gamemd.exe"+F69CD: 90                 -  nop 
+"gamemd.exe"+F69CE: 90                 -  nop 
+"gamemd.exe"+F69CF: 90                 -  nop 
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>11</ID>
+      <Description>"Inf. Energy and No Energy Consume"</Description>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{ Game   : gamemd.exe
+  Version: 
+  Date   : 2020-05-16
+  Author : New Autonomous
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+aobscanmodule(Energy,gamemd.exe,89 8E A4 53 00 00) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+
+code:
+  mov [esi+000053A4],ecx
+  mov [esi+000053A4],(int)5000
+  mov [esi+000053A8],(int)0
+  jmp return
+
+Energy:
+  jmp newmem
+  nop
+return:
+registersymbol(Energy)
+
+[DISABLE]
+
+Energy:
+  db 89 8E A4 53 00 00
+
+unregistersymbol(Energy)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "gamemd.exe"+108D01
+
+"gamemd.exe"+108CE2: 3A C3              -  cmp al,bl
+"gamemd.exe"+108CE4: 74 0C              -  je gamemd.exe+108CF2
+"gamemd.exe"+108CE6: 38 9F 1B 04 00 00  -  cmp [edi+0000041B],bl
+"gamemd.exe"+108CEC: 75 04              -  jne gamemd.exe+108CF2
+"gamemd.exe"+108CEE: 3B CB              -  cmp ecx,ebx
+"gamemd.exe"+108CF0: 74 45              -  je gamemd.exe+108D37
+"gamemd.exe"+108CF2: 8B CF              -  mov ecx,edi
+"gamemd.exe"+108CF4: E8 B7 5A F4 FF     -  call gamemd.exe+4E7B0
+"gamemd.exe"+108CF9: 8B 8E A4 53 00 00  -  mov ecx,[esi+000053A4]
+"gamemd.exe"+108CFF: 03 C8              -  add ecx,eax
+// ---------- INJECTING HERE ----------
+"gamemd.exe"+108D01: 89 8E A4 53 00 00  -  mov [esi+000053A4],ecx
+// ---------- DONE INJECTING  ----------
+"gamemd.exe"+108D07: 8B CF              -  mov ecx,edi
+"gamemd.exe"+108D09: E8 72 5B F4 FF     -  call gamemd.exe+4E880
+"gamemd.exe"+108D0E: 8B 96 A8 53 00 00  -  mov edx,[esi+000053A8]
+"gamemd.exe"+108D14: 8B CF              -  mov ecx,edi
+"gamemd.exe"+108D16: 03 D0              -  add edx,eax
+"gamemd.exe"+108D18: 89 96 A8 53 00 00  -  mov [esi+000053A8],edx
+"gamemd.exe"+108D1E: E8 9D 71 20 00     -  call gamemd.exe+30FEC0
+"gamemd.exe"+108D23: 84 C0              -  test al,al
+"gamemd.exe"+108D25: 74 10              -  je gamemd.exe+108D37
+"gamemd.exe"+108D27: 8B CF              -  mov ecx,edi
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>9</ID>
+      <Description>"Instant Build"</Description>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{ Game   : gamemd.exe
+  Version: 
+  Date   : 2020-05-15
+  Author : New Autonomous
+
+  This script does blah blah blah
+}
+
+[ENABLE]
+
+aobscanmodule(InstantBuild,gamemd.exe,C3 90 90 90 8B 41 24 C3 90) // should be unique
+alloc(newmem,$1000)
+
+label(code)
+label(return)
+
+newmem:
+  cmp [ecx+24],(int)53
+  jge code
+  mov [ecx+24],(int)53
+
+code:
+  mov eax,[ecx+24]
+  ret 
+  nop 
+  jmp return
+
+InstantBuild+04:
+  jmp newmem
+return:
+registersymbol(InstantBuild)
+
+[DISABLE]
+
+InstantBuild+04:
+  db 8B 41 24 C3 90
+
+unregistersymbol(InstantBuild)
+dealloc(newmem)
+
+{
+// ORIGINAL CODE - INJECTION POINT: "gamemd.exe"+CA120
+
+"gamemd.exe"+CA111: 83 C4 0C           -  add esp,0C
+"gamemd.exe"+CA114: C3                 -  ret 
+"gamemd.exe"+CA115: 5F                 -  pop edi
+"gamemd.exe"+CA116: 32 C0              -  xor al,al
+"gamemd.exe"+CA118: 5E                 -  pop esi
+"gamemd.exe"+CA119: 83 C4 0C           -  add esp,0C
+"gamemd.exe"+CA11C: C3                 -  ret 
+"gamemd.exe"+CA11D: 90                 -  nop 
+"gamemd.exe"+CA11E: 90                 -  nop 
+"gamemd.exe"+CA11F: 90                 -  nop 
+// ---------- INJECTING HERE ----------
+"gamemd.exe"+CA120: 8B 41 24           -  mov eax,[ecx+24]
+"gamemd.exe"+CA123: C3                 -  ret 
+"gamemd.exe"+CA124: 90                 -  nop 
+// ---------- DONE INJECTING  ----------
+"gamemd.exe"+CA125: 90                 -  nop 
+"gamemd.exe"+CA126: 90                 -  nop 
+"gamemd.exe"+CA127: 90                 -  nop 
+"gamemd.exe"+CA128: 90                 -  nop 
+"gamemd.exe"+CA129: 90                 -  nop 
+"gamemd.exe"+CA12A: 90                 -  nop 
+"gamemd.exe"+CA12B: 90                 -  nop 
+"gamemd.exe"+CA12C: 90                 -  nop 
+"gamemd.exe"+CA12D: 90                 -  nop 
+"gamemd.exe"+CA12E: 90                 -  nop 
+}
+</AssemblerScript>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+  <DisassemblerComments>
+    <DisassemblerComment>
+      <Address>"gamemd.exe"+F6A04</Address>
+      <Comment>Energy Increase
+</Comment>
+    </DisassemblerComment>
+    <DisassemblerComment>
+      <Address>"gamemd.exe"+F6A14</Address>
+      <Comment>Energy Consume
+</Comment>
+    </DisassemblerComment>
+  </DisassemblerComments>
+</CheatTable>

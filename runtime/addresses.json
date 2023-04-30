@@ -1,0 +1,585 @@
+{
+    "PlayerCode": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "30"
+        ]
+    },
+    "TechLevel": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "1D4"
+        ]
+    },
+    "Group": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "1E8"
+        ]
+    },
+    "Money": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "30C"
+        ]
+    },
+    "Power": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "53A4"
+        ]
+    },
+    "Drain": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "53A8"
+        ]
+    },
+    "Color 30-Bl 17-Prp": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "16054"
+        ]
+    },
+    "Revealed ": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "577A"
+        ]
+    },
+    "TeamCode": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "5788"
+        ]
+    },
+    "GameMode": {
+        "Address": "00A8B238",
+        "Offsets": []
+    },
+    "VeteranCombat": {
+        "Address": "008871E0",
+        "Offsets": [
+            "670"
+        ]
+    },
+    "VeteranSpeed": {
+        "Address": "008871E0",
+        "Offsets": [
+            "678"
+        ]
+    },
+    "Player 1 Money": {
+        "Address": "00B0F724",
+        "Offsets": [
+            "0",
+            "30C"
+        ]
+    },
+    "Player 2 Money": {
+        "Address": "00B0F724",
+        "Offsets": [
+            "30C",
+            "4"
+        ]
+    },
+    "Player 3 Money": {
+        "Address": "00B0F724",
+        "Offsets": [
+            "30C",
+            "8"
+        ]
+    },
+    "Player 4 Money": {
+        "Address": "00B0F724",
+        "Offsets": [
+            "30C",
+            "C"
+        ]
+    },
+    "Player 5 Money": {
+        "Address": "00B0F724",
+        "Offsets": [
+            "30C",
+            "10"
+        ]
+    },
+    "Player 6 Money": {
+        "Address": "00B0F724",
+        "Offsets": [
+            "30C",
+            "14"
+        ]
+    },
+    "Player 7 Money": {
+        "Address": "00B0F724",
+        "Offsets": [
+            "30C",
+            "18"
+        ]
+    },
+    "Player 8 Money": {
+        "Address": "00B0F724",
+        "Offsets": [
+            "30C",
+            "1C"
+        ]
+    },
+    "Player 9 Money": {
+        "Address": "00B0F724",
+        "Offsets": [
+            "30C",
+            "20"
+        ]
+    },
+    "Player 10 Money": {
+        "Address": "00B0F724",
+        "Offsets": [
+            "30C",
+            "24"
+        ]
+    },
+    "Number of Players": {
+        "Address": "00A80238",
+        "Offsets": []
+    },
+    "Nuclear Missle Ready": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "6F",
+            "0",
+            "258"
+        ]
+    },
+    "Nuclear Missle Countdown": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "38",
+            "0",
+            "258"
+        ]
+    },
+    "Nuclear Missle Recharge": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "B0",
+            "28",
+            "0",
+            "258"
+        ]
+    },
+    "Iron Curtain Ready": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "6F",
+            "4",
+            "258"
+        ]
+    },
+    "Iron Curtain Countdown": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "38",
+            "4",
+            "258"
+        ]
+    },
+    "Iron Curtain Recharge": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "B0",
+            "28",
+            "4",
+            "258"
+        ]
+    },
+    "Weather Storm Ready": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "6F",
+            "8",
+            "258"
+        ]
+    },
+    "Weather Storm Countdown": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "38",
+            "8",
+            "258"
+        ]
+    },
+    "Weather Storm Recharge": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "B0",
+            "28",
+            "8",
+            "258"
+        ]
+    },
+    "Chronosphere Ready": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "6F",
+            "C",
+            "258"
+        ]
+    },
+    "Chronosphere Countdown": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "38",
+            "C",
+            "258"
+        ]
+    },
+    "Chronosphere Recharge": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "B0",
+            "28",
+            "C",
+            "258"
+        ]
+    },
+    "Paradrop Ready": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "6F",
+            "14",
+            "258"
+        ]
+    },
+    "Paradrop Countdown": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "38",
+            "14",
+            "258"
+        ]
+    },
+    "Paradrop Recharge": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "B0",
+            "28",
+            "14",
+            "258"
+        ]
+    },
+    "American Paradrop Ready": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "6F",
+            "18",
+            "258"
+        ]
+    },
+    "American Paradrop Countdown": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "38",
+            "18",
+            "258"
+        ]
+    },
+    "American Paradrop Recharge": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "B0",
+            "28",
+            "18",
+            "258"
+        ]
+    },
+    "Psychic Dominator Ready": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "6F",
+            "1C",
+            "258"
+        ]
+    },
+    "Psychic Dominator Countdown": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "38",
+            "1C",
+            "258"
+        ]
+    },
+    "Psychic Dominator Recharge": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "B0",
+            "28",
+            "1C",
+            "258"
+        ]
+    },
+    "Spyplane Ready": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "6F",
+            "20",
+            "258"
+        ]
+    },
+    "Spyplane Countdown": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "38",
+            "20",
+            "258"
+        ]
+    },
+    "Spyplane Recharge": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "B0",
+            "28",
+            "20",
+            "258"
+        ]
+    },
+    "Genetic Mutator Ready": {
+        "Address": "00A83D4C",
+        "Offsets": [
+            "6F",
+            "24",
+            "258"
+        ]
+    },
+    "Genetic Mutator Countdown": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "38",
+            "24",
+            "258"
+        ]
+    },
+    "Genetic Mutator Recharge": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "B0",
+            "28",
+            "24",
+            "258"
+        ]
+    },
+    "Force Shield Ready": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "6F",
+            "28",
+            "258"
+        ]
+    },
+    "Force Shield Countdown": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "38",
+            "28",
+            "258"
+        ]
+    },
+    "Force Shield Recharge": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "B0",
+            "28",
+            "28",
+            "258"
+        ]
+    },
+    "Psychic Reveal Ready": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "6F",
+            "2C",
+            "258"
+        ]
+    },
+    "Psychic Reveal Coutdown": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "38",
+            "2C",
+            "258"
+        ]
+    },
+    "Psychic Reveal Recharge": {
+        "Address": "gamemd.exe+683D4C",
+        "Offsets": [
+            "B0",
+            "28",
+            "2C",
+            "258"
+        ]
+    },
+    "VeteranArmor": {
+        "Address": "008871E0",
+        "Offsets": [
+            "688"
+        ]
+    },
+    "VeteranROF": {
+        "Address": "008871E0",
+        "Offsets": [
+            "690"
+        ]
+    },
+    "DominatorDamage": {
+        "Address": "008871E0",
+        "Offsets": [
+            "30C"
+        ]
+    },
+    "PrismSupportModifier": {
+        "Address": "008871E0",
+        "Offsets": [
+            "49C"
+        ]
+    },
+    "PrismSupportDelay": {
+        "Address": "008871E0",
+        "Offsets": [
+            "4A4"
+        ]
+    },
+    "PrismSupportDuration": {
+        "Address": "008871E0",
+        "Offsets": [
+            "4A8"
+        ]
+    },
+    "PrismSupportHeight": {
+        "Address": "008871E0",
+        "Offsets": [
+            "4AC"
+        ]
+    },
+    "V3RocketDamage": {
+        "Address": "008871E0",
+        "Offsets": [
+            "4D0"
+        ]
+    },
+    "V3RocketEliteDamage": {
+        "Address": "008871E0",
+        "Offsets": [
+            "4D4"
+        ]
+    },
+    "DMisDamage": {
+        "Address": "008871E0",
+        "Offsets": [
+            "504"
+        ]
+    },
+    "DMisEliteDamage": {
+        "Address": "008871E0",
+        "Offsets": [
+            "508"
+        ]
+    },
+    "CMisDamage": {
+        "Address": "008871E0",
+        "Offsets": [
+            "538"
+        ]
+    },
+    "CMisEliteDamage": {
+        "Address": "008871E0",
+        "Offsets": [
+            "53C"
+        ]
+    },
+    "PurifierBonus": {
+        "Address": "008871E0",
+        "Offsets": [
+            "F3C"
+        ]
+    },
+    "NukeDamage": {
+        "Address": "0088756C",
+        "Offsets": [
+            "A4",
+            "28"
+        ]
+    },
+    "LightningDamage": {
+        "Address": "008871E0",
+        "Offsets": [
+            "1798"
+        ]
+    },
+    "AmerParadropInf": {
+        "Address": "008871E0",
+        "Offsets": [
+            "DF8",
+            "0",
+            "C08"
+        ]
+    },
+    "AmerParadropNum": {
+        "Address": "008871E0",
+        "Offsets": [
+            "0",
+            "C24"
+        ]
+    },
+    "AllyParadropInf": {
+        "Address": "008871E0",
+        "Offsets": [
+            "DF8",
+            "0",
+            "C40"
+        ]
+    },
+    "AllyParadropNum": {
+        "Address": "008871E0",
+        "Offsets": [
+            "0",
+            "C5C"
+        ]
+    },
+    "SovParadropInf": {
+        "Address": "008871E0",
+        "Offsets": [
+            "DF8",
+            "0",
+            "C78"
+        ]
+    },
+    "SovParadropNum": {
+        "Address": "008871E0",
+        "Offsets": [
+            "0",
+            "C94"
+        ]
+    },
+    "YuriParadropInf": {
+        "Address": "008871E0",
+        "Offsets": [
+            "DF8",
+            "0",
+            "CB0"
+        ]
+    },
+    "YuriParadropNum": {
+        "Address": "008871E0",
+        "Offsets": [
+            "0",
+            "CCC"
+        ]
+    },
+    "InstantBuild": {
+        "Address": "00A83E34",
+        "Offsets": [
+            "0",
+            "24"
+        ]
+    }
+}
