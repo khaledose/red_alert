@@ -1,7 +1,7 @@
+from actions.readers import getGeneralDefaults
 from pathlib import Path
 import configparser
 import subprocess
-from actions.readers import getGeneralDefaults
 
 class UtilRepo():
     def __init__(self, read_file, path='') -> None:

@@ -43,7 +43,7 @@ class BuildingsTab(Frame):
         self.allow_all_bases_for_country_checkbox.pack(fill=tk.X, padx=10, pady=10)
 
         # Create a dropdown list for Allow All Bases For Country option
-        countries = getAllSides()
+        countries = getAllCountries()
         self.country_dropdown = CustomDropdown(self.allow_all_bases_for_country_frame, 'Country', countries, state="disabled", command=allowAllBasesForCountry)
         self.country_dropdown.pack(fill=tk.X, padx=10, pady=10)
 

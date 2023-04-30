@@ -6,8 +6,6 @@ from units_tab import UnitsTab
 from trainer_tab import TrainerTab
 from tkinter import filedialog
 from ttkbootstrap import Style
-from actions.util import UtilRepo, GeneralDefaults
-from actions.trainer import GameModifier
 import tkinter as tk
 from kink import di
 
@@ -141,13 +139,3 @@ class App(tk.Tk):
         if game_location:
             di['config'].setGameDir(game_location)
             self.game_location_label.configure(text=game_location)
-
-if __name__ == '__main__':
-    di['config'] = UtilRepo('./mod/rulesmo.ini') # rulesmd.ini - rulesmo.ini
-    try:
-        di['trainer'] = GameModifier('gamemd.exe', './db/addresses.json')
-    except:
-        print('error')
-    di['defaultConfig'] = GeneralDefaults()
-    app = App()
-    app.mainloop()

@@ -1,7 +1,6 @@
 
 from ttkbootstrap.widgets import Frame, Label, Scale, Combobox, Checkbutton
 import tkinter as tk
-from kink import di
 
 class CustomSlider(Frame):
     def __init__(self, master, name, minimum, maximum, initial_value, command=None, is_float=False):

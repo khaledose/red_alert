@@ -1,8 +1,7 @@
 from ReadWriteMemory import ReadWriteMemory
 from kink import di
-import json
-import threading
 import pyMeow
+import json
 
 class GameModifier():
     def __init__(self, pname, offsets_path):
