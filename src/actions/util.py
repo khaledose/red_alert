@@ -1,19 +1,13 @@
-from actions.readers import getGeneralDefaults
 from pathlib import Path
 import configparser
 import subprocess
 
 class UtilRepo():
-    def __init__(self, read_file, path='') -> None:
-        self.read_file = read_file
-        self.game_dir = Path(path)
-        self.rules_path = Path(read_file)
+    def __init__(self) -> None:
         self.config = configparser.ConfigParser()
         self.config.optionxform = str
-        self.config.read(self.rules_path.as_posix())
-
-    def setGameDir(self, path):
-        self.game_dir = Path(path)
+        self.refConfig = configparser.ConfigParser()
+        self.refConfig.optionxform = str
 
     def launchGame(self):
         try:
@@ -22,20 +16,13 @@ class UtilRepo():
         except:
             print('error')
 
-    def saveConfig(self):
+    def loadConfig(self, file):
+        self.config.read(file)
+        self.refConfig.read(file)
+
+    def saveConfig(self, file):
         try:
-            save_path = self.game_dir.joinpath(self.read_file).as_posix()
-            with open(self.read_file, 'w') as configfile:
+            with open(file, 'w') as configfile:
                 self.config.write(configfile)
         except:
             print('error')
-
-class GeneralDefaults():
-    def __init__(self) -> None:
-        (self.costMultiplier, 
-        self.oreGrowth, 
-        self.oreGrowthPercent, 
-        self.oreSpread, 
-        self.oreSpreadPercent, 
-        self.oreIncome, 
-        self.buildSpeed) = getGeneralDefaults()

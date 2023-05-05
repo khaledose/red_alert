@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable>
+  <CheatEntries>
+    <CheatEntry>
+      <ID>871</ID>
+      <Description>"One Hit Kill"</Description>
+      <LastState Activated="1"/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+aobscanmodule(_onehitkill,gamemd.exe,8B 17 2B C2 85 C0 89 46 6C 0F 8F D4 00 00 00)
+
+_onehitkill:
+mov edx,[edi]
+xor eax,eax
+
+registersymbol(_onehitkill)
+
+[DISABLE]
+_onehitkill:
+  db 8B 17 2B C2 85 C0
+
+unregistersymbol(_onehitkill)
+
+</AssemblerScript>
+    </CheatEntry>
+  </CheatEntries>
+</CheatTable>

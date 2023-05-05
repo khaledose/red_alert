@@ -1,13 +1,14 @@
 from ttkbootstrap.widgets import Frame, Button, Label, Notebook
-from buildings_tab import BuildingsTab
-from general_tab import GeneralTab
-from supers_tab import SupersTab
-from units_tab import UnitsTab
-from trainer_tab import TrainerTab
+from .buildings_tab import BuildingsTab
+from .general_tab import GeneralTab
+from .supers_tab import SupersTab
+from .units_tab import UnitsTab
+from .trainer_tab import TrainerTab
 from tkinter import filedialog
 from ttkbootstrap import Style
 import tkinter as tk
 from kink import di
+from src.actions.defaults import resetAll
 
 class CustomWindowBar(Frame):
     def __init__(self, master, icon_path, title, max_icon_size=(20, 20)):
@@ -118,24 +119,28 @@ class App(tk.Tk):
         self.button_frame.pack(side="bottom", fill="x", padx=10, pady=10)
 
         # Create a button for selecting game location
-        self.game_location_button = Button(self.button_frame, text="Game Location", command=self.select_game_location)
+        self.game_location_button = Button(self.button_frame, text="Load", command=self.load_config)
         self.game_location_button.pack(side="left", padx=(0, 10))
 
+        # Create a button to save rules
+        self.save_rules_button = Button(self.button_frame, text="Save", command=self.save_config)
+        self.save_rules_button.pack(side="left", padx=(0, 10))
+
         # Create a label to show the selected game location
-        self.game_location_label = Label(self.button_frame, text="No location selected")
+        self.game_location_label = Label(self.button_frame, text="Game Not Found")
         self.game_location_label.pack(side="left")
 
         # Create a button to launch the game
-        self.launch_game_button = Button(self.button_frame, text="Launch Game", command=di['config'].launchGame)
+        self.launch_game_button = Button(self.button_frame, text="Reset", command=resetAll)
         self.launch_game_button.pack(side="right", padx=(10, 0))
 
-        # Create a button to save rules
-        self.save_rules_button = Button(self.button_frame, text="Save Rules", command=di['config'].saveConfig)
-        self.save_rules_button.pack(side="right", padx=(0, 10))
-
-    def select_game_location(self):
+    def load_config(self):
         # Open a file dialog to select a game location
-        game_location = filedialog.askdirectory()
-        if game_location:
-            di['config'].setGameDir(game_location)
-            self.game_location_label.configure(text=game_location)
+        config_location = filedialog.askopenfilename(defaultextension='ini')
+        if config_location:
+            di['config'].loadConfig(config_location)
+    
+    def save_config(self):
+        config_location = filedialog.asksaveasfilename(defaultextension='ini')
+        if config_location:
+            di['config'].saveConfig(config_location)

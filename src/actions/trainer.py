@@ -1,6 +1,6 @@
-from ReadWriteMemory import ReadWriteMemory
+from pymem.ptypes import RemotePointer
+from pymem import Pymem, memory
 from kink import di
-import pyMeow
 import json
 
 class GameModifier():
@@ -8,108 +8,162 @@ class GameModifier():
         self.pname = pname
         with open(offsets_path, 'r') as file:
             self.data = json.load(file)
-        self.rwm = ReadWriteMemory()
-        self.process = self.rwm.get_process_by_name(pname)
 
     def write(self, address, offsets, value):
         address = int(address, 16)
         offsets = [int(i, 16) for i in offsets]
-        p = self.process.get_pointer(address, offsets)
-        print(p)
-        self.process.write(p, value)
+        p = self.get_pointer(address, offsets)
+        self.pm.write_int(p, value)
 
     def read(self, address, offsets):
         address = int(address, 16)
         offsets = [int(i, 16) for i in offsets]
-        p = self.process.get_pointer(address, offsets)
-        return self.process.read(p)
+        p = self.get_pointer(address, offsets)
+        return self.pm.read_int(p)
     
     def run(self, key, value):
-        self.process.open()
+        self.pm = Pymem(self.pname)
         data = self.data[key]
         self.write(data['Address'], data['Offsets'], value)
-        self.process.close()
+        self.pm.close_process()
     
     def get(self, key):
-        self.process.open()
+        self.pm = Pymem(self.pname)
         data = self.data[key]
         value = self.read(data['Address'], data['Offsets'])
-        self.process.close()
+        self.pm.close_process()
         return value
+    
+    def get_pointer(self, base, offsets):
+        remote_pointer = RemotePointer(self.pm.process_handle, base)
+        for offset in offsets:
+            if offset != offsets[-1]:
+                remote_pointer = RemotePointer(self.pm.process_handle, remote_pointer.value + offset)
+            else:
+                return remote_pointer.value + offset
 
-def  calc_distance(dest, start):
+def set_money(amount):
+    trainer: GameModifier = di['trainer']
+    trainer.run('Money', amount)
+
+def set_tech_level(tech):
+    trainer: GameModifier = di['trainer']
+    trainer.run('TechLevel', tech)
+
+def set_power(power):
+    trainer: GameModifier = di['trainer']
+    trainer.run('Power', power)
+
+def set_drain(drain):
+    trainer: GameModifier = di['trainer']
+    trainer.run('Power', drain)
+
+def allied_stolen_tech(enable):
+    trainer: GameModifier = di['trainer']
+    tech = trainer.get("StolenTech")
+    if enable:
+        tech += 0x802
+    else:
+        tech -= 0x802
+    trainer.run("StolenTech", tech)
+
+def soviet_stolen_tech(enable):
+    trainer: GameModifier = di['trainer']
+    tech = trainer.get("StolenTech")
+    if enable:
+        tech += 0x1004
+    else:
+        tech -= 0x1004
+    trainer.run("StolenTech", tech)
+
+def yuri_stolen_tech(enable):
+    trainer: GameModifier = di['trainer']
+    tech = trainer.get("StolenTech")
+    if enable:
+        tech += 0x2008
+    else:
+        tech -= 0x2008
+    trainer.run("StolenTech", tech)
+
+def foehn_stolen_tech(enable):
+    trainer: GameModifier = di['trainer']
+    tech = trainer.get("StolenTech")
+    if enable:
+        tech += 0x4010
+    else:
+        tech -= 0x4010
+    trainer.run("StolenTech", tech)
+
+def calc_distance(dest, start):
     offset = dest - start
     byte_offset = offset.to_bytes(4, byteorder='little', signed=True)
     return byte_offset
 
 def instant_build(enable):
-    process = pyMeow.open_process("gamemd.exe")
+    process = Pymem("gamemd.exe")
     start_point = 0x400000 + 0xCA120
-    
+
     if enable:
-        new_mem = pyMeow.allocate_memory(process, 1000)
+        new_mem = memory.allocate_memory(process.process_handle, 1000)
         ret = calc_distance(new_mem, (start_point + 5))
-        pyMeow.w_bytes(process, start_point, b'\xE9' + ret)
+        memory.write_bytes(process.process_handle, start_point, b'\xE9' + ret, len(b'\xE9' + ret))
         ret = calc_distance(start_point+5, new_mem + 5 + 25)
-        pyMeow.w_bytes(process, new_mem, b'\x81\x79\x24\x35\x00\x00\x00\x0F\x8D\x07\x00\x00\x00\xC7\x41\x24\x35\x00\x00\x00\x8B\x41\x24\xC3\x90\xE9' + ret)
+        memory.write_bytes(process.process_handle, new_mem, b'\x81\x79\x24\x35\x00\x00\x00\x0F\x8D\x07\x00\x00\x00\xC7\x41\x24\x35\x00\x00\x00\x8B\x41\x24\xC3\x90\xE9' + ret, len(b'\x81\x79\x24\x35\x00\x00\x00\x0F\x8D\x07\x00\x00\x00\xC7\x41\x24\x35\x00\x00\x00\x8B\x41\x24\xC3\x90\xE9' + ret))
     else:
-        pyMeow.w_bytes(process, start_point, b'\x8B\x41\x24\xC3\x90')
-
-def set_money(amount):
-    di['trainer'].run('Money', amount)
-
-def set_tech_level(tech):
-    di['trainer'].run('TechLevel', tech)
-
-def set_power(power):
-    di['trainer'].run('Power', power)
-
-def set_drain(drain):
-    di['trainer'].run('Power', drain)
+        memory.write_bytes(process.process_handle, start_point, b'\x8B\x41\x24\xC3\x90', len(b'\x8B\x41\x24\xC3\x90'))
 
 def unlimited_energy(state):
-    process = pyMeow.open_process("gamemd.exe")
-    energy_mem = pyMeow.allocate_memory(process, 2048)
+    process = Pymem("gamemd.exe")
+    energy_mem = memory.allocate_memory(process.process_handle, 2048)
 
     start_point =  0x00400000 + 0x108D01
 
     if state:
-        pyMeow.w_bytes(process, energy_mem, b'\x3B\x35\x4C\x3D\xA8\x00\x0F\x84\x0B\x00\x00\x00\x89\x8E\xA4\x53\x00\x00')
+        memory.write_bytes(process.process_handle, energy_mem, b'\x3B\x35\x4C\x3D\xA8\x00\x0F\x84\x0B\x00\x00\x00\x89\x8E\xA4\x53\x00\x00', len(b'\x3B\x35\x4C\x3D\xA8\x00\x0F\x84\x0B\x00\x00\x00\x89\x8E\xA4\x53\x00\x00'))
 
         ret = calc_distance((start_point + 6), (energy_mem + 18) + 5)
-        pyMeow.w_bytes(process, energy_mem + 18, b'\xE9' + ret + b'\xC7\x86\xA4\x53\x00\x00\xFF\xE3\x0B\x54')
+        memory.write_bytes(process.process_handle, energy_mem + 18, b'\xE9' + ret + b'\xC7\x86\xA4\x53\x00\x00\xFF\xE3\x0B\x54', len(b'\xE9' + ret + b'\xC7\x86\xA4\x53\x00\x00\xFF\xE3\x0B\x54'))
 
         ret = calc_distance((start_point + 6), (energy_mem + 33) + 5)
-        pyMeow.w_bytes(process, energy_mem + 33, b'\xE9' + ret)
+        memory.write_bytes(process.process_handle, energy_mem + 33, b'\xE9' + ret, len(b'\xE9' + ret))
 
         ret = calc_distance(energy_mem, (start_point) + 5)
-        pyMeow.w_bytes(process, start_point, b'\xE9' + ret + b'\x90')
+        memory.write_bytes(process.process_handle, start_point, b'\xE9' + ret + b'\x90', len(b'\xE9' + ret + b'\x90'))
     else:
-        pyMeow.w_bytes(process, start_point, b'\x89\x8E\xA4\x53\x00\x00')
-    pyMeow.close_process(process)
+        memory.write_bytes(process.process_handle, start_point, b'\x89\x8E\xA4\x53\x00\x00', len(b'\x89\x8E\xA4\x53\x00\x00'))
+
+    process.close_process()
 
 def reveal_map(enable):
-    process = pyMeow.open_process("gamemd.exe")
+    process = Pymem("gamemd.exe")
 
     block1 = 0x400000 + 0x108E07
     block2 = 0x400000 + 0x108EAD
     block3 = 0x400000 + 0x108F6E
 
     if enable:
-        pyMeow.w_bytes(process, block1, b'\x8B\x81\xB8\x02\x00\x00\x53\x55\x56\x8B\xB1\xB0\x02\x00\x00\x57\x83\xFE\xFF\xC6\x44\x24\x10\x00\x74\x0C\x8B\x15\x84\xED\xA8\x00\x01\xD0\x29\xF0\x7F\x0A\x85\xC0\x0F\x85\xFA\x00\x00\x00\x90\x90')
+        bts = {
+            block1 : '8B 81 B8 02 00 00 53 55 56 8B B1 B0 02 00 00 57 83 FE FF C6 44 24 10 00 74 0C 8B 15 84 ED A8 00 01 D0 29 F0 7F 0A 85 C0 0F 85 FA 00 00 00 90 90',
+            block2 :  '8B 98 20 05 00 00 EB 07 90 90 90 90 90 90 90 8A 9B 7A 15 00 00 84 DB 74 42',
+            block3 : '8B 6E 78 85 ED 0F 8E 89 00 00 00 8B 7E 6C 8B 0F 85 C9 74 74 39 35 4C 3D A8 00 75 6C 8A 86 7A 57 00 00 38 05 9C ED A8 00 7F 5E 90 90 90 8A 41 74 84 C0 74 54'
+        }
         
-        pyMeow.w_bytes(process, block2, b'\x8B\x98\x20\x05\x00\x00\xEB\x07\x90\x90\x90\x90\x90\x90\x90\x8A\x9B\x7A\x15\x00\x00\x84\xDB\x74\x42')
-
-        pyMeow.w_bytes(process, block3, b'\x8B\x6E\x78\x85\xED\x0F\x8E\x89\x00\x00\x00\x8B\x7E\x6C\x8B\x0F\x85\xC9\x74\x74\x39\x35\x4C\x3D\xA8\x00\x75\x6C\x8A\x86\x7A\x57\x00\x00\x38\x05\x9C\xED\xA8\x00\x7F\x5E\x90\x90\x90\x8A\x41\x74\x84\xC0\x74\x54')
+        for address, data in bts.items():
+            b = bytes.fromhex(data)
+            memory.write_bytes(process.process_handle, address, b, len(b))
     else:
-        pyMeow.w_bytes(process, block3, b'\x8B\x6E\x78\x85\xED\x0F\x8E\x89\x00\x00\x00\x8B\x7E\x6C\x8B\x0F\x85\xC9\x74\x74\x8B\x81\x20\x05\x00\x00\x80\xB8\xA5\x16\x00\x00\x00\x74\x65\x8A\x81\x81\x00\x00\x00\x84\xC0\x75\x5B\x8A\x41\x74\x84\xC0\x74\x54\xA1\x38\xB2\xA8\x00\x85\xC0\x75\x16\x8A\x86\xEC\x01\x00\x00\x84\xC0\x75\x19\x8A\x86\xED\x01\x00\x00\x84\xC0\x74\x22\xEB\x0D\x3B\x35\x4C\x3D\xA8\x00\x0F\x94\xC0\x84\xC0\x74\x13')
+        bts = {
+            block3 : '8B 6E 78 85 ED 0F 8E 89 00 00 00 8B 7E 6C 8B 0F 85 C9 74 74 8B 81 20 05 00 00 80 B8 A5 16 00 00 00 74 65 8A 81 81 00 00 00 84 C0 75 5B 8A 41 74 84 C0 74 54 A1 38 B2 A8 00 85 C0 75 16 8A 86 EC 01 00 00 84 C0 75 19 8A 86 ED 01 00 00 84 C0 74 22 EB 0D 3B 35 4C 3D A8 00 0F 94 C0 84 C0 74 13',
+            block2 : '8B 98 20 05 00 00 80 BB A4 16 00 00 00 74 4C 8A 98 81 00 00 00 84 DB 75 42 8A 58 74 84 DB 74 3B 85 ED 75 14 8A 99 EC 01 00 00 84 DB 75 0A 8A 99 ED 01 00 00 84 DB 74 0E 8A 98 1B 04 00 00',
+            block1 : '8B 81 B8 02 00 00 53 55 56 8B B1 B0 02 00 00 57 83 FE FF C6 44 24 10 00 74 0E 8B 15 84 ED A8 00 2B D6 3B D0 7D 0A 2B C2 85 C0 0F 85 F8 00 00 00'
+        }
         
-        pyMeow.w_bytes(process, block2, b'\x8B\x98\x20\x05\x00\x00\x80\xBB\xA4\x16\x00\x00\x00\x74\x4C\x8A\x98\x81\x00\x00\x00\x84\xDB\x75\x42\x8A\x58\x74\x84\xDB\x74\x3B\x85\xED\x75\x14\x8A\x99\xEC\x01\x00\x00\x84\xDB\x75\x0A\x8A\x99\xED\x01\x00\x00\x84\xDB\x74\x0E\x8A\x98\x1B\x04\x00\x00')
-
-        pyMeow.w_bytes(process, block1, b'\x8B\x81\xB8\x02\x00\x00\x53\x55\x56\x8B\xB1\xB0\x02\x00\x00\x57\x83\xFE\xFF\xC6\x44\x24\x10\x00\x74\x0E\x8B\x15\x84\xED\xA8\x00\x2B\xD6\x3B\xD0\x7D\x0A\x2B\xC2\x85\xC0\x0F\x85\xF8\x00\x00\x00')
+        for address, data in bts.items():
+            b = bytes.fromhex(data)
+            memory.write_bytes(process.process_handle, address, b, len(b))
 
 def train_elites(enable):
-    process = pyMeow.open_process("gamemd.exe")
+    process = Pymem("gamemd.exe")
 
     block1 = 0x400000 + 0x335647
     block2 = 0x400000 + 0x31207F
@@ -118,22 +172,37 @@ def train_elites(enable):
     block5 = 0x400000 + 0xF798A
 
     if enable:
-        pyMeow.w_bytes(process, block1, b'\x39\x05\x4C\x3D\xA8\x00\x75\x29\x90\x90\x8B\x86\xC4\x06\x00\x00\x8A\x88\xCE\x0C\x00\x00\x84\xC9\x90\x90\x8A\x88\x8E\x0C\x00\x00\x84\xC9\x74\x0D\x31\xC9\x41\xC1\xE1\x1E\x89\x8E\x50\x01\x00\x00\x90\xE9\x83\xA9\x43\x07\x90')
-
-        pyMeow.w_bytes(process, block2, b'\x39\x05\x4C\x3D\xA8\x00\x75\x38\x90\x90')
-
-        pyMeow.w_bytes(process, block3, b'\x39\x05\x4C\x3D\xA8\x00\x75\x1F\x90\x90\x8B\x86\xC0\x06\x00\x00\x8A\x88\x8E\x0C\x00\x00\x84\xC9\x74\x0D\x31\xC9\x41\xC1\xE1\x1E\x89\x8E\x50\x01\x00\x00\x90')
-
-        pyMeow.w_bytes(process, block4, b'\x39\x05\x4C\x3D\xA8\x00\x75\x27\x90\x90')
-
-        pyMeow.w_bytes(process, block5, b'\x8B\x05\x4C\x3D\xA8\x00\x39\xC5\x74\x28\x90\x8B\x44\x24\x18\xBE\xB8\x4D\x7E\x00\x89\x74\x24\x14\x31\xFF\x39\xF8\x0F\x84\x74\x05\x00\x00\x8A\x4C\x24\x21\x84\xC9\x0F\x84\x68\x05\x00\x00\xE9\x56\x05\x00\x00\x8A\x87\x9C\x0D\x00\x00\x84\xC0\x74\x09\x8B\x05\x4C\x3D\xA8\x00\x39\xC5\x75\xC3\x90\x8A\x87\x9B\x0D\x00\x00\x84\xC0\x74\x08\x8B\x05\x4C\x3D\xA8\x00\x39\xC5\x75\xAE\x90')
+        bts = {
+            block1 : '39 05 4C 3D A8 00 75 29 90 90 8B 86 C4 06 00 00 8A 88 CE 0C 00 00 84 C9 90 90 8A 88 8E 0C 00 00 84 C9 74 0D 31 C9 41 C1 E1 1E 89 8E 50 01 00 00 90 E9 83 A9 43 07 90',
+            block2 : '39 05 4C 3D A8 00 75 38 90 90',
+            block3 : '39 05 4C 3D A8 00 75 1F 90 90 8B 86 C0 06 00 00 8A 88 8E 0C 00 00 84 C9 74 0D 31 C9 41 C1 E1 1E 89 8E 50 01 00 00 90',
+            block4 : '39 05 4C 3D A8 00 75 27 90 90',
+            block5 : '8B 05 4C 3D A8 00 39 C5 74 28 90 8B 44 24 18 BE B8 4D 7E 00 89 74 24 14 31 FF 39 F8 0F 84 74 05 00 00 8A 4C 24 21 84 C9 0F 84 68 05 00 00 E9 56 05 00 00 8A 87 9C 0D 00 00 84 C0 74 09 8B 05 4C 3D A8 00 39 C5 75 C3 90 8A 87 9B 0D 00 00 84 C0 74 08 8B 05 4C 3D A8 00 39 C5 75 AE 90'
+        }
+        
+        for address, data in bts.items():
+            b = bytes.fromhex(data)
+            memory.write_bytes(process.process_handle, address, b, len(b))
     else:
-        pyMeow.w_bytes(process, block5, b'\x8A\x85\xBE\x02\x00\x00\x84\xC0\x75\x28\x8B\x44\x24\x18\xBE\xB8\x4D\x7E\x00\x89\x74\x24\x14\x33\xFF\x3B\xC7\x0F\x84\x75\x05\x00\x00\x8A\x4C\x24\x21\x84\xC9\x0F\x84\x69\x05\x00\x00\xE9\x57\x05\x00\x00\x8A\x87\x9C\x0D\x00\x00\x84\xC0\x74\x0A\x8A\x85\xBD\x02\x00\x00\x84\xC0\x74\xC4\x8A\x87\x9B\x0D\x00\x00\x84\xC0\x74\x0A\x8A\x85\xBC\x02\x00\x00\x84\xC0\x74\xB0\x8B\x87\xA0\x0D\x00\x00')
+        bts = {
+            block5 : '8A 85 BE 02 00 00 84 C0 75 28 8B 44 24 18 BE B8 4D 7E 00 89 74 24 14 33 FF 3B C7 0F 84 75 05 00 00 8A 4C 24 21 84 C9 0F 84 69 05 00 00 E9 57 05 00 00 8A 87 9C 0D 00 00 84 C0 74 0A 8A 85 BD 02 00 00 84 C0 74 C4 8A 87 9B 0D 00 00 84 C0 74 0A 8A 85 BC 02 00 00 84 C0 74 B0 8B 87 A0 0D 00 00',
+            block3 : '8A 88 BF 02 00 00 84 C9 74 1D 8B 86 C0 06 00 00 8A 88 8E 0C 00 00 84 C9 74 0D 6A 01 8D 8E 50 01 00 00 E8 3F 83 23 00 8B 86 C0 06 00 00',
+            block4 : '8A 88 BF 02 00 00 84 C9 74 25 8B 06 8B CE FF 50 2C 83 F8 10 75 14 8B 86 10 07 00 00 85 C0 74 0A',
+            block2 : '8A 88 C0 02 00 00 84 C9 74 36 8B 16 8B CE FF 52 2C 83 F8 28 74 16 8B 06 8B CE',
+            block1 : '8A 88 C0 02 00 00 84 C9 74 27 8B 86 C4 06 00 00 8A 88 CE 0C 00 00 84 C9 75 17 8A 88 8E 0C 00 00 84 C9 74 0D 6A 01 8D 8E 50 01 00 00 E8 18 AA 01 00'
+        }
+        
+        for address, data in bts.items():
+            b = bytes.fromhex(data)
+            memory.write_bytes(process.process_handle, address, b, len(b))
 
-        pyMeow.w_bytes(process, block3, b'\x8A\x88\xBF\x02\x00\x00\x84\xC9\x74\x1D\x8B\x86\xC0\x06\x00\x00\x8A\x88\x8E\x0C\x00\x00\x84\xC9\x74\x0D\x6A\x01\x8D\x8E\x50\x01\x00\x00\xE8\x3F\x83\x23\x00\x8B\x86\xC0\x06\x00\x00')
+def build_anywhere(enable):
+    process = Pymem("gamemd.exe")
+    start_point = 0x4A8F61
 
-        pyMeow.w_bytes(process, block4, b'\x8A\x88\xBF\x02\x00\x00\x84\xC9\x74\x25\x8B\x06\x8B\xCE\xFF\x50\x2C\x83\xF8\x10\x75\x14\x8B\x86\x10\x07\x00\x00\x85\xC0\x74\x0A')
+    if enable:
+        bts = bytes.fromhex('C6 44 24 3C 01')
+    else:
+        bts = bytes.fromhex('C6 44 24 3C 00')
 
-        pyMeow.w_bytes(process, block2, b'\x8A\x88\xC0\x02\x00\x00\x84\xC9\x74\x36\x8B\x16\x8B\xCE\xFF\x52\x2C\x83\xF8\x28\x74\x16\x8B\x06\x8B\xCE')
-
-        pyMeow.w_bytes(process, block1, b'\x8A\x88\xC0\x02\x00\x00\x84\xC9\x74\x27\x8B\x86\xC4\x06\x00\x00\x8A\x88\xCE\x0C\x00\x00\x84\xC9\x75\x17\x8A\x88\x8E\x0C\x00\x00\x84\xC9\x74\x0D\x6A\x01\x8D\x8E\x50\x01\x00\x00\xE8\x18\xAA\x01\x00')
+    process.write_bytes(start_point, bts, len(bts))

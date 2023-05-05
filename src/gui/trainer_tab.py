@@ -1,21 +1,19 @@
-from custom_widgets import CustomSlider, CustomDropdown, CustomCheckButton
+from .custom_widgets import CustomSlider, CustomDropdown, CustomCheckbutton
 from ttkbootstrap.widgets import Frame, LabelFrame
-from actions.readers import getAllInfantries
-from actions.trainer import instant_build, unlimited_energy, set_power, set_drain, set_money, set_tech_level, train_elites, reveal_map
+from src.actions.readers import getAllInfantries
+from src.actions.trainer import instant_build, unlimited_energy, set_money, set_tech_level, train_elites, reveal_map, allied_stolen_tech, soviet_stolen_tech, yuri_stolen_tech, foehn_stolen_tech, build_anywhere
 import tkinter as tk
 
 class TrainerTab(Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        infantries = getAllInfantries()
-
         # Create the Allied Paradrop labelframe
         self.general_frame = LabelFrame(self, text="General")
         self.general_frame.pack(padx=10, pady=5, fill=tk.X)
 
         # Create the Enable checkbox
-        self.reveal_map_checkbox = CustomCheckButton(self.general_frame, text="Reveal Map", command=reveal_map)
+        self.reveal_map_checkbox = CustomCheckbutton(self.general_frame, text="Reveal Map", command=reveal_map)
         self.reveal_map_checkbox.pack(padx=10, pady=5, fill=tk.X)
 
         self.money_slider = CustomSlider(self.general_frame, "Money", 0, 100000, 0, command=set_money)
@@ -26,10 +24,13 @@ class TrainerTab(Frame):
         self.build_frame.pack(padx=10, pady=5, fill=tk.X)
 
         # Create the Enable checkbox
-        self.instant_build_checkbox = CustomCheckButton(self.build_frame, text="Instant Build", command=instant_build)
+        self.instant_build_checkbox = CustomCheckbutton(self.build_frame, text="Instant Build", command=instant_build)
         self.instant_build_checkbox.pack(padx=10, pady=5, fill=tk.X)
 
-        self.elites_checkbox = CustomCheckButton(self.build_frame, text="Elites", command=train_elites)
+        self.build_anywhere_checkbox = CustomCheckbutton(self.build_frame, text="Build Anywhere", command=build_anywhere)
+        self.build_anywhere_checkbox.pack(padx=10, pady=5, fill=tk.X)
+
+        self.elites_checkbox = CustomCheckbutton(self.build_frame, text="Elites", command=train_elites)
         self.elites_checkbox.pack(padx=10, pady=5, fill=tk.X)
 
         self.tech_level_slider = CustomSlider(self.build_frame, "Tech Level", 1, 10, 0, command=set_tech_level)
@@ -40,14 +41,25 @@ class TrainerTab(Frame):
         self.energy_frame.pack(padx=10, pady=5, fill=tk.X)
 
         # Create the Enable checkbox
-        self.unlimited_energy_checkbox = CustomCheckButton(self.energy_frame, text="Unlimited Energy", command=unlimited_energy)
+        self.unlimited_energy_checkbox = CustomCheckbutton(self.energy_frame, text="Unlimited Energy", command=unlimited_energy)
         self.unlimited_energy_checkbox.pack(padx=10, pady=5, fill=tk.X)
 
-        self.energy_slider = CustomSlider(self.energy_frame, "Power", 0, 10000, 0, command=set_power)
-        self.energy_slider.pack(padx=10, pady=5, fill=tk.X)
+        # Create the Allied Paradrop labelframe
+        self.stolen_tech_frame = LabelFrame(self, text="Stolen Tech")
+        self.stolen_tech_frame.pack(padx=10, pady=5, fill=tk.X)
 
-        self.drain_slider = CustomSlider(self.energy_frame, "Drain", 0, 10000, 0, command=set_drain)
-        self.drain_slider.pack(padx=10, pady=5, fill=tk.X)
+        # Create the Enable checkbox
+        self.allied_tech_checkbox = CustomCheckbutton(self.stolen_tech_frame, text="Allied", command=allied_stolen_tech)
+        self.allied_tech_checkbox.pack(padx=10, pady=5, fill=tk.X)
+
+        self.soviet_tech_checkbox = CustomCheckbutton(self.stolen_tech_frame, text="Soviet", command=soviet_stolen_tech)
+        self.soviet_tech_checkbox.pack(padx=10, pady=5, fill=tk.X)
+
+        self.yuri_tech_checkbox = CustomCheckbutton(self.stolen_tech_frame, text="Yuri", command=yuri_stolen_tech)
+        self.yuri_tech_checkbox.pack(padx=10, pady=5, fill=tk.X)
+
+        self.foehn_tech_checkbox = CustomCheckbutton(self.stolen_tech_frame, text="Foehn", command=foehn_stolen_tech)
+        self.foehn_tech_checkbox.pack(padx=10, pady=5, fill=tk.X)
 
         # # Create the Unit Type dropdown list
         # self.allied_unit_type_dropdown = CustomDropdown(self.allied_paradrop_frame, "Unit Type", options=infantries, state="disabled", command=setAlliedParaDropUnit)
@@ -65,7 +77,7 @@ class TrainerTab(Frame):
         # self.soviet_paradrop_frame.pack(padx=10, pady=5, fill=tk.X)
 
         # # Create the Enable checkbox
-        # self.soviet_checkbox = CustomCheckButton(self.soviet_paradrop_frame, text="Enable", command=allowSovietParaDrop)
+        # self.soviet_checkbox = CustomCheckbutton(self.soviet_paradrop_frame, text="Enable", command=allowSovietParaDrop)
         # self.soviet_checkbox.pack(padx=10, pady=5, fill=tk.X)
 
         # # Create the Unit Type dropdown list
@@ -84,7 +96,7 @@ class TrainerTab(Frame):
         # self.yuri_paradrop_frame.pack(padx=10, pady=5, fill=tk.X)
 
         # # Create the Enable checkbox
-        # self.yuri_checkbox = CustomCheckButton(self.yuri_paradrop_frame, text="Enable", command=allowYuriParaDrop)
+        # self.yuri_checkbox = CustomCheckbutton(self.yuri_paradrop_frame, text="Enable", command=allowYuriParaDrop)
         # self.yuri_checkbox.pack(padx=10, pady=5, fill=tk.X)
 
         # # Create the Unit Type dropdown list

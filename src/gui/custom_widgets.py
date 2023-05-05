@@ -1,5 +1,5 @@
 
-from ttkbootstrap.widgets import Frame, Label, Scale, Combobox, Checkbutton
+from ttkbootstrap.widgets import Frame, Label, Scale, Combobox, Checkbutton, Spinbox
 import tkinter as tk
 
 class CustomSlider(Frame):
@@ -74,18 +74,16 @@ class CustomDropdown(Frame):
         if self.action is not None:
             self.action(self.get_selection())
 
-class CustomCheckButton(Frame):
+class CustomCheckbutton(Frame):
     def __init__(self, master, text="Text", command=None):
         super().__init__(master)
         
-        # Create label
         self.label = Label(self, text=text, width=20)
         self.label.pack(side=tk.LEFT, padx=10, pady=5, anchor=tk.W)
 
         self.var = tk.BooleanVar()
         self.action = command
 
-        # Create dropdown list
         self.check = Checkbutton(self, bootstyle="round-toggle", variable=self.var, command=self.checkbutton_callback)
         self.check.pack(fill=tk.X, padx=10, pady=10, anchor=tk.E, side=tk.RIGHT)
 
@@ -103,3 +101,22 @@ class CustomCheckButton(Frame):
     
     def add_dep(self, widget):
         self.deps.append(widget)
+
+class CustomSpinbox(Frame):
+    def __init__(self, master, text, from_, to, increment, command=None) -> None:
+        super().__init__(master)
+        
+        self.label = Label(self, text=text, width=20)
+        self.label.pack(side=tk.LEFT, padx=10, pady=5, anchor=tk.W)
+
+        self.value = tk.IntVar()
+        self.action = command
+
+        self.spin = Spinbox(self, textvariable=self.value, from_=from_, to=to, increment=increment, command=self.spinbox_callback)
+        self.spin.pack(fill=tk.X, padx=10, pady=10, anchor=tk.E)
+
+        self.spin.bind("<Return>", self.spinbox_callback)
+    
+    def spinbox_callback(self, e=None):
+        if self.action:
+            self.action(self.value.get())

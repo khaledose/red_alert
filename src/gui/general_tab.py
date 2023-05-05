@@ -1,6 +1,6 @@
 from ttkbootstrap.widgets import Frame, LabelFrame
-from custom_widgets import CustomSlider, CustomCheckButton
-from actions.actions import setCostMultiplier, setBuildSpeed, setOreGrowthRate, setOreIncome, removeBuildLimit, removeRequirements
+from .custom_widgets import CustomSlider, CustomCheckbutton, CustomSpinbox
+from src.actions.actions import setCost, setBuildSpeed, setOreGrowthRate, setOreIncome, removeBuildLimit, removeRequirements
 import tkinter as tk
 
 class GeneralTab(Frame):
@@ -13,7 +13,7 @@ class GeneralTab(Frame):
         self.set_cost_frame.pack(fill=tk.X, padx=10, pady=5)
 
         # Create a CustomSlider for Set Cost option
-        self.set_cost_slider = CustomSlider(self.set_cost_frame, "Set Cost", 0.01, 10.0, 1.0, is_float=True, command=setCostMultiplier)
+        self.set_cost_slider = CustomSlider(self.set_cost_frame, "Set Cost", 0, 10000, 0, command=setCost)
         self.set_cost_slider.pack(fill=tk.X, padx=10, pady=5)
 
         # Create a frame for Ore Mining option
@@ -36,17 +36,18 @@ class GeneralTab(Frame):
         self.set_building_speed_slider.pack(fill=tk.X, padx=10, pady=5)
 
         # Create a frame for Set Building Speed option
-        self.set_building_speed_frame = LabelFrame(self, text="Remove Build Limit")
+        self.set_building_speed_frame = LabelFrame(self, text="Build Limit")
         self.set_building_speed_frame.pack(fill=tk.X, padx=10, pady=5)
 
         # Create a CustomSlider for Set Building Speed option
-        self.set_building_speed_slider = CustomCheckButton(self.set_building_speed_frame, "Enable", command=removeBuildLimit)
+        self.set_building_speed_slider = CustomCheckbutton(self.set_building_speed_frame, "Remove", command=removeBuildLimit)
         self.set_building_speed_slider.pack(fill=tk.X, padx=10, pady=5)
 
         # Create a frame for Set Building Speed option
-        self.set_building_speed_frame = LabelFrame(self, text="Remove Requirements")
+        self.set_building_speed_frame = LabelFrame(self, text="Requirements")
         self.set_building_speed_frame.pack(fill=tk.X, padx=10, pady=5)
 
         # Create a CustomSlider for Set Building Speed option
-        self.set_building_speed_slider = CustomCheckButton(self.set_building_speed_frame, "Enable", command=removeRequirements)
+        self.set_building_speed_slider = CustomCheckbutton(self.set_building_speed_frame, "Remove", command=removeRequirements)
         self.set_building_speed_slider.pack(fill=tk.X, padx=10, pady=5)
+

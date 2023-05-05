@@ -1,7 +1,7 @@
-from custom_widgets import CustomSlider, CustomDropdown, CustomCheckButton
+from .custom_widgets import CustomSlider, CustomDropdown, CustomCheckbutton
 from ttkbootstrap.widgets import Frame, LabelFrame
-from actions.actions import allowAlliedParaDrop, allowSovietParaDrop, allowYuriParaDrop, setParaDropCooldown, setAlliedParaDropUnit, setAlliedParaDropCount, setSovietParaDropUnit, setSovietParaDropCount, setYuriParaDropUnit, setYuriParaDropCount
-from actions.readers import getAllInfantries
+from src.actions.actions import allowAlliedParaDrop, allowSovietParaDrop, allowYuriParaDrop, setParaDropCooldown, setAlliedParaDropUnit, setAlliedParaDropCount, setSovietParaDropUnit, setSovietParaDropCount, setYuriParaDropUnit, setYuriParaDropCount
+from src.actions.readers import getAllInfantries
 import tkinter as tk
 
 class SupersTab(Frame):
@@ -15,7 +15,7 @@ class SupersTab(Frame):
         self.allied_paradrop_frame.pack(padx=10, pady=5, fill=tk.X)
 
         # Create the Enable checkbox
-        self.allied_checkbox = CustomCheckButton(self.allied_paradrop_frame, text="Enable", command=allowAlliedParaDrop)
+        self.allied_checkbox = CustomCheckbutton(self.allied_paradrop_frame, text="Enable", command=allowAlliedParaDrop)
         self.allied_checkbox.pack(padx=10, pady=5, fill=tk.X)
 
         # Create the Unit Type dropdown list
@@ -34,7 +34,7 @@ class SupersTab(Frame):
         self.soviet_paradrop_frame.pack(padx=10, pady=5, fill=tk.X)
 
         # Create the Enable checkbox
-        self.soviet_checkbox = CustomCheckButton(self.soviet_paradrop_frame, text="Enable", command=allowSovietParaDrop)
+        self.soviet_checkbox = CustomCheckbutton(self.soviet_paradrop_frame, text="Enable", command=allowSovietParaDrop)
         self.soviet_checkbox.pack(padx=10, pady=5, fill=tk.X)
 
         # Create the Unit Type dropdown list
@@ -53,7 +53,7 @@ class SupersTab(Frame):
         self.yuri_paradrop_frame.pack(padx=10, pady=5, fill=tk.X)
 
         # Create the Enable checkbox
-        self.yuri_checkbox = CustomCheckButton(self.yuri_paradrop_frame, text="Enable", command=allowYuriParaDrop)
+        self.yuri_checkbox = CustomCheckbutton(self.yuri_paradrop_frame, text="Enable", command=allowYuriParaDrop)
         self.yuri_checkbox.pack(padx=10, pady=5, fill=tk.X)
 
         # Create the Unit Type dropdown list
